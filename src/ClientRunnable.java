@@ -2,23 +2,37 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.PrintWriter;
 
 public class ClientRunnable implements Runnable {
 
     private final BufferedReader input;
+    private final PrintWriter output;
     private int datanum = 0;
     private int valorProducto;
     private int porcentaje;
     private int pesoProducto;
-    public double Monto;
+    public static double montoRecibido;
+    public static double montoEnviado;
 
-    public ClientRunnable(InputStream socketISR) throws IOException {
+    public ClientRunnable(InputStream socketISR, OutputStream socketOPW) throws IOException {
         this.input = new BufferedReader(new InputStreamReader(socketISR));
+        this.output = new PrintWriter(socketOPW, true);
+    }
+
+    public void kill() {
+        try {
+            input.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        output.close();
     }
 
     private boolean isInt(String message) {
         try{
-            int num = Integer.parseInt(message);
+            Integer.parseInt(message);
             return true;
         } catch (NumberFormatException e) {
             System.out.println("Error: " + message + " no es un número.");
@@ -26,8 +40,18 @@ public class ClientRunnable implements Runnable {
         }
     }
 
-    public double getMonto() {
-        return this.Monto;
+    private boolean isDouble(String str) {
+        try {
+            Double.parseDouble(str);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+    
+    public double getMontoRecibido() {
+        System.out.println(montoRecibido + " ClientRun monto recibido");
+        return ClientRunnable.montoRecibido;
     }
 
     @Override
@@ -47,12 +71,14 @@ public class ClientRunnable implements Runnable {
                         datanum += 1;
                     } else if (datanum == 2) {
                         pesoProducto = Integer.parseInt(msg);
-                        this.Monto = (valorProducto * porcentaje/100) + (pesoProducto * 0.15);
+                        montoEnviado = (valorProducto*porcentaje/100.0) + (pesoProducto*0.15);
+                        output.println(montoEnviado);
                         datanum = 0;
                     }
+                } else if (isDouble(msg)) {
+                    ClientRunnable.montoRecibido = Double.valueOf(msg); //revisar el tipo de dato de todos los valores
                 }
                 System.out.println(msg);
-                System.out.println(Monto);
             }
         } catch (IOException e) {
             e.printStackTrace();

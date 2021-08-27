@@ -52,7 +52,7 @@ public class ClientHandler extends Thread {
                     break;
                 }
                 // Your logic
-                System.out.println("log: "+msg);
+                System.out.println("log: " + msg);
                 notifyAllClients(msg);
             }
             kill();

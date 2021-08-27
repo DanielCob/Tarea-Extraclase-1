@@ -11,7 +11,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
-public class ClientInterface extends Application {
+public class ClientInterface extends Application implements Runnable {
     
     private Stage window;
     private Button button0;
@@ -24,6 +24,7 @@ public class ClientInterface extends Application {
         window.setOnCloseRequest(e -> {
             window.close();
             try {
+                client.running = false;
                 client.kill();
             } catch (IOException e1) {
                 e1.printStackTrace();
@@ -51,8 +52,15 @@ public class ClientInterface extends Application {
                 client.sendMessage(num0.getText());
                 client.sendMessage(num1.getText());
                 client.sendMessage(num2.getText());
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e1) {
+                    e1.printStackTrace();
+                }
                 textArea.setText("El resultado calculado es: " + String.valueOf(client.getMonto()));
-                System.out.println(client.getMonto());
+                System.out.println(client.getMonto() + "Interface");
+                label.setFont(new Font("Arial", 24));
+                label.setText("¡Resultado recibido!");
             } else {
                 label.setFont(new Font("Arial", 18));
                 label.setText("No digitaste números en al menos una de las casillas");
@@ -75,10 +83,10 @@ public class ClientInterface extends Application {
         window.setScene(scene);
         window.show();
     }
-    
+
     private boolean isInt(TextField input, String message) {
         try{
-            int num = Integer.parseInt(input.getText());
+            Integer.parseInt(input.getText());
             return true;
         } catch (NumberFormatException e) {
             System.out.println("Error: " + message + " no es un número.");
@@ -86,8 +94,14 @@ public class ClientInterface extends Application {
         }
     }
 
+    @Override
+    public void run() {
+        new Thread(client).start();
+        launch(ClientInterface.class);
+    }
+
     public static void main(String[] args) {
         new Thread(client).start();
-        launch(args);
+        launch(ClientInterface.class);
     }
 }

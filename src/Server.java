@@ -3,7 +3,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 
-public class Server {
+public class Server implements Runnable{
 
     private ServerSocket serverSocket;
     private final ArrayList<ClientHandler> clientsList;
@@ -30,6 +30,16 @@ public class Server {
         serverSocket.close();
     }
 
+    @Override
+    public void run() {
+        Server server = new Server();
+        try {
+            server.start(8080);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
     public static void main(String[] args) {
         Server server = new Server();
         try {
