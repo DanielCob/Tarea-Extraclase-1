@@ -11,12 +11,29 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
-public class ClientInterface extends Application implements Runnable {
-    
+/**
+ * Esta clase se encarga de manejar la parte gráfica del cliente. De modo que también debe ordenarle a la clase {@link Client} cúando enviar un mensaje y que datos tendrá.
+ */
+public class ClientInterface extends Application {
+    /**
+     * Contiene la información necesaria para la ventana de la aplicación.
+     */
     private Stage window;
+    /**
+     * Almacena la información del botón "Enviar".
+     */
     private Button button0;
+    /**
+     * Almacena la instancia de la clase {@link Client}.
+     */
     private static Client client = new Client();
     
+    
+    /** 
+     * Contiene todos los elementos gráficos de la ventana, además indica cuando se deba enviar la información.
+     * @param primaryStage
+     * @throws Exception
+     */
     @Override
     public void start(Stage primaryStage) throws Exception {
         window = primaryStage;
@@ -84,6 +101,13 @@ public class ClientInterface extends Application implements Runnable {
         window.show();
     }
 
+    
+    /** 
+     * Verifica si un string es un número entero.
+     * @param input Indica la caja de texto que contiene el mensaje.
+     * @param message Indica el mensaje en sí.
+     * @return boolean Retorna true si es entero o false si no lo es.
+     */
     private boolean isInt(TextField input, String message) {
         try{
             Integer.parseInt(input.getText());
@@ -93,13 +117,11 @@ public class ClientInterface extends Application implements Runnable {
             return false;
         }
     }
-
-    @Override
-    public void run() {
-        new Thread(client).start();
-        launch(ClientInterface.class);
-    }
-
+ 
+    /** 
+     * Inicia la aplicación así como la instancia de la clase {@link Client}.
+     * @param args
+     */
     public static void main(String[] args) {
         new Thread(client).start();
         launch(ClientInterface.class);
