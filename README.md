@@ -1,6 +1,6 @@
-## Getting Started
+## ¿Cómo usar la aplicación?
 
-Welcome to the VS Code Java world. Here is a guideline to help you get started to write Java code in Visual Studio Code.
+Para usar la aplicación es necesario correr una instancia de la clase `Server`. Después se abren dos instancias de la clase `ClientInterface`. Con esto ya se puede probar la aplicación.
 
 ## Folder Structure
 
