@@ -65,7 +65,7 @@ public class Client implements Runnable {
     
     
     /** 
-     * Inicia la clase Cliente, así como la clase {@link ClientInterface}. Se mantiene en bucle esperando el Monto calculado por el otro cliente hasta cerrar el programa.
+     * Inicia la clase Client, así como la clase {@link ClientInterface}. Se mantiene en bucle esperando el Monto calculado por el otro cliente hasta cerrar el programa.
      * @param ipAddress Recibe la dirección ip del servidor.
      * @param port Recibe el puerto del servidor.
      * @param name Recibe el nombre que se le va a asignar a la instancia del cliente.
